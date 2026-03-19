@@ -37,6 +37,7 @@ app.get('/proxy-stats', (req, res) => {
 app.all('*', async (req, res) => {
   const pathAndQuery = req.originalUrl;
   const model = req.body?.model || 'unknown';
+  const startTime = Date.now(); // 📝 Timestamp du début
 
   // Pass through the original request body (keep streaming if requested)
   let bodyData = req.method !== 'GET' ? req.body : null;
@@ -105,9 +106,12 @@ app.all('*', async (req, res) => {
 
         res.end();
 
+        // Calculate execution time 📊
+        const duration = Date.now() - startTime;
+
         // Record tokens after stream completes
         if (tokenData.prompt_eval_count > 0 || tokenData.eval_count > 0) {
-          recordTokens(model, tokenData.prompt_eval_count, tokenData.eval_count);
+          recordTokens(model, tokenData.prompt_eval_count, tokenData.eval_count, duration);
         }
 
         resolve();
@@ -129,13 +133,18 @@ app.all('*', async (req, res) => {
   });
 });
 
-function recordTokens(model, inputTokens, outputTokens) {
+function recordTokens(model, inputTokens, outputTokens, duration) {
   axios.post(
     `${MONITOR_URL}/api/record`,
-    { model, inputTokens, outputTokens },
+    { 
+      model, 
+      inputTokens, 
+      outputTokens,
+      duration  // 📊 Temps d'exécution en ms
+    },
     { timeout: 5000 }
   ).then(() => {
-    console.log(`✅ [${model}] ${inputTokens}+${outputTokens} tokens`);
+    console.log(`✅ [${model}] ${inputTokens}+${outputTokens} tokens (${duration}ms)`);
   }).catch(() => {});
 }
 
