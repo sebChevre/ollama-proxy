@@ -1,37 +1,17 @@
 const express = require('express');
 const http = require('http');
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
 
 const app = express();
 const PROXY_PORT = process.env.PROXY_PORT || 11435;
 const OLLAMA_HOST = process.env.OLLAMA_HOST || '127.0.0.1';
 const OLLAMA_PORT = process.env.OLLAMA_PORT || 11434;
 const MONITOR_URL = process.env.MONITOR_URL || 'http://localhost:3333';
-const LOG_FILE = process.env.LOG_FILE || path.join(__dirname, '../data/proxy-log.json');
-
-if (!fs.existsSync(path.dirname(LOG_FILE))) {
-  fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
-}
 
 app.use(express.json({ limit: '50mb' }));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', proxy_port: PROXY_PORT });
-});
-
-app.get('/proxy-stats', (req, res) => {
-  try {
-    const logs = fs.existsSync(LOG_FILE) ? JSON.parse(fs.readFileSync(LOG_FILE, 'utf8')) : [];
-    res.json({
-      totalRequests: logs.length,
-      recentRequests: logs.slice(-100),
-      requestsByEndpoint: {}
-    });
-  } catch (e) {
-    res.json({ error: e.message });
-  }
 });
 
 app.all('*', async (req, res) => {
