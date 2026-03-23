@@ -1,0 +1,201 @@
+<mxfile host="65bd71144e">
+    <diagram id="flux-requete-proxy" name="Flux de Requête">
+        <mxGraphModel dx="226" dy="321" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="OLLAMA-PROXY — Flux de Requête" style="text;html=1;fontSize=18;fontStyle=1;fillColor=none;strokeColor=none;align=center;verticalAlign=middle;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="10" width="400" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell1" value="📨 Requête HTTP arrive&#xa;GET/POST sur :11435" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5ff;strokeColor=#01579b;strokeWidth=2;fontSize=12;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="420" y="50" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell1b" value="👤 client = headers[x-client] || unknown" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#9e9e9e;strokeWidth=1;fontSize=10" vertex="1" parent="1">
+                    <mxGeometry x="420" y="120" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge0" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#333333" edge="1" parent="1" source="cell1" target="cell1b">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell2" value="🔍 detectFormat(body, url, headers)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f57f17;strokeWidth=2;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="420" y="175" width="220" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#333333" parent="1" source="cell1b" target="cell2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="detect_box" value="Règles de détection (par priorité) :&#xa;&#xa;1. x-api-key ou x-forward-to → openai&#xa;2. URL contient /chat/completions ou /v1/ → openai&#xa;3. URL = /models ou /models/... → openai&#xa;4. URL commence par /api/ → ollama&#xa;5. body: model+prompt → ollama&#xa;6. body: model+messages → ollama&#xa;7. body: messages[] → openai&#xa;8. Sinon → unknown (pass-through ollama)" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f57f17;strokeWidth=1;fontSize=10;align=left;spacingLeft=8;spacingTop=2;size=14" vertex="1" parent="1">
+                    <mxGeometry x="700" y="130" width="290" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_detect_note" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#f57f17;dashed=1" edge="1" parent="1" source="cell2" target="detect_box">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell3a" value="openai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#c62828;strokeWidth=2;fontSize=12;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="190" y="300" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell3b" value="ollama" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ccddff;strokeColor=#0d47a1;strokeWidth=2;fontSize=12;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="470" y="300" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell3c" value="unknown" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0e0e0;strokeColor=#424242;strokeWidth=2;fontSize=12;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="740" y="300" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge2a" value="openai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#c62828;fontColor=#c62828;fontSize=10" parent="1" source="cell2" target="cell3a" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge2b" value="ollama" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#0d47a1;fontColor=#0d47a1;fontSize=10" parent="1" source="cell2" target="cell3b" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge2c" value="unknown" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#757575;fontColor=#757575;fontSize=10" parent="1" source="cell2" target="cell3c" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell4a" value="handleOpenAI()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#c62828;strokeWidth=2;fontSize=12;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="160" y="380" width="180" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge3a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#c62828" parent="1" source="cell3a" target="cell4a" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell4a_method" value="GET → axios.get()&#xa;POST → axios.post()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffecec;strokeColor=#c62828;strokeWidth=1;fontSize=10" vertex="1" parent="1">
+                    <mxGeometry x="160" y="440" width="180" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge3a2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#c62828" edge="1" parent="1" source="cell4a" target="cell4a_method">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell5a" value="🔗 HTTPS vers Infomaniak&#xa;(ou x-forward-to)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff9999;strokeColor=#c62828;strokeWidth=1;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="160" y="500" width="180" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge4a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#c62828" parent="1" source="cell4a_method" target="cell5a" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell5a_examples" value="GET /models → liste modèles&#xa;POST /chat/completions → chat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=1;fontSize=9;fontStyle=2" vertex="1" parent="1">
+                    <mxGeometry x="10" y="445" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_examples" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#e65100;dashed=1" edge="1" parent="1" source="cell5a_examples" target="cell4a_method">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell4b" value="handleOLLAMA()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ccddff;strokeColor=#0d47a1;strokeWidth=2;fontSize=12;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="440" y="380" width="180" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge3b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#0d47a1" parent="1" source="cell3b" target="cell4b" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell5b" value="🔗 HTTP vers Ollama&#xa;localhost:11434" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ccff;strokeColor=#0d47a1;strokeWidth=1;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="440" y="440" width="180" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge4b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#0d47a1" parent="1" source="cell4b" target="cell5b" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell4c" value="Pass-through&#xa;→ handleOLLAMA()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0e0e0;strokeColor=#424242;strokeWidth=1;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="720" y="380" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge3c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#757575" parent="1" source="cell3c" target="cell4c" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell5c" value="🔗 HTTP vers Ollama&#xa;localhost:11434" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#424242;strokeWidth=1;fontSize=10" parent="1" vertex="1">
+                    <mxGeometry x="720" y="440" width="160" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge4c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#757575" parent="1" source="cell4c" target="cell5c" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell6" value="🔄 Streaming de la réponse au client" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=2;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="330" y="570" width="280" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge5a" value="SSE stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#c62828;fontSize=9;fontColor=#c62828" parent="1" source="cell5a" target="cell6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge5b" value="NDJSON stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#0d47a1;fontSize=9;fontColor=#0d47a1" parent="1" source="cell5b" target="cell6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge5c" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#757575" parent="1" source="cell5c" target="cell6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell7" value="📊 Extraction pendant le stream" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=1;fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="330" y="640" width="280" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#2e7d32" edge="1" parent="1" source="cell6" target="cell7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell7_detail" value="OpenAI: usage.prompt_tokens / completion_tokens&#xa;Ollama: prompt_eval_count / eval_count&#xa;+ contenu input/output capturé" style="shape=note;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=1;fontSize=9;align=left;spacingLeft=6;size=14" vertex="1" parent="1">
+                    <mxGeometry x="660" y="620" width="280" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge6_note" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#2e7d32;dashed=1" edge="1" parent="1" source="cell7" target="cell7_detail">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell8" value="✅ recordTokens()&#xa;→ POST /api/record au monitoring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;strokeWidth=2;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="330" y="720" width="280" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#2e7d32" edge="1" parent="1" source="cell7" target="cell8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell8_payload" value="Payload envoyé :&#xa;model, client, provider,&#xa;inputTokens, outputTokens,&#xa;duration, inputText, outputText" style="shape=note;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;strokeWidth=1;fontSize=9;align=left;spacingLeft=6;size=14" vertex="1" parent="1">
+                    <mxGeometry x="660" y="710" width="220" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge7_note" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#2e7d32;dashed=1" edge="1" parent="1" source="cell8" target="cell8_payload">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="prov_openai" value="provider = &#39;infomaniak&#39;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#c62828;strokeWidth=1;fontSize=10;fontStyle=2" vertex="1" parent="1">
+                    <mxGeometry x="160" y="570" width="150" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_prov_a" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#c62828;dashed=1" edge="1" parent="1" source="cell5a" target="prov_openai">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="prov_ollama" value="provider = &#39;ollama&#39;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ccddff;strokeColor=#0d47a1;strokeWidth=1;fontSize=10;fontStyle=2" vertex="1" parent="1">
+                    <mxGeometry x="440" y="510" width="150" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_prov_b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#0d47a1;dashed=1" edge="1" parent="1" source="cell5b" target="prov_ollama">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cell9" value="📈 ollama-monitoring&#xa;(PostgreSQL + Dashboard)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#6a1b9a;strokeWidth=2;fontSize=12;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="370" y="810" width="200" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge8" value="HTTP POST" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#6a1b9a;fontSize=10;fontColor=#6a1b9a" edge="1" parent="1" source="cell8" target="cell9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="1qdEDcBrGfQpHh7sYsU1" name="Architecture">
+        <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="900" pageHeight="700" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="v1" value="🖥️ OpenClaw&#xa;(x-client: openclaw)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=2;fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="80" y="60" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v2" value="🌐 Open WebUI&#xa;(x-client: open-webui)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="330" y="60" width="170" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v2b" value="🔧 Autre client&#xa;(x-client: ...)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#757575;strokeWidth=1;fontSize=10" vertex="1" parent="1">
+                    <mxGeometry x="580" y="60" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v5" value="⚡ ollama-proxy&#xa;:11435" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f57f17;strokeWidth=3;fontSize=14;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="280" y="220" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#e65100" edge="1" parent="1" source="v1" target="v5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#1565c0" edge="1" parent="1" source="v2" target="v5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2b" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#757575" edge="1" parent="1" source="v2b" target="v5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3" value="🦙 Ollama&#xa;localhost:11434&#xa;provider: ollama" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ccddff;strokeColor=#0d47a1;strokeWidth=2;fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="100" y="400" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="v4" value="☁️ Infomaniak&#xa;api.infomaniak.com&#xa;provider: infomaniak" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#c62828;strokeWidth=2;fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="500" y="400" width="190" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" value="format: ollama&#xa;/api/*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#0d47a1;fontSize=10;fontColor=#0d47a1" edge="1" parent="1" source="v5" target="v3">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" value="format: openai&#xa;/models, /v1/*, /chat/*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#c62828;fontSize=10;fontColor=#c62828" edge="1" parent="1" source="v5" target="v4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v6" value="📈 ollama-monitoring&#xa;:3333 (PostgreSQL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#6a1b9a;strokeWidth=2;fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="280" y="540" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" value="recordTokens()&#xa;model, client, provider, tokens, duration, textes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#6a1b9a;fontSize=9;fontColor=#6a1b9a" edge="1" parent="1" source="v5" target="v6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
